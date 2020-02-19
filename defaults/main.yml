@@ -1,0 +1,6 @@
+---
+# defaults file for ubuntu-mate-desktop-customization
+
+customize_user: "rmach"
+customize_theme_name: "Arc"
+customize_theme_package: "arc-theme"
