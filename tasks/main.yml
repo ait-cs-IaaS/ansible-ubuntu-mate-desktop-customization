@@ -1,0 +1,37 @@
+---
+# tasks file for ubuntu-mate-desktop-customization
+
+
+- name: Updating apt-Cache
+  apt:
+    update_cache: yes
+  tags: [install, config]
+
+- name: Install apt packages
+  apt:
+    name: [python-psutil, dconf-editor, dbus, "{{ customize_theme_package }}"]
+  tags: [install, config]
+
+- name: Set GTK theme
+  dconf: 
+    key: "/org/mate/desktop/interface/gtk-theme" 
+    value: "'{{ customize_theme_name }}'"
+  become_user: "{{ customize_user }}"
+  tags: [config]
+
+- name: Copy desktop-background to host
+  copy: 
+    src: files/wallpaper.jpg 
+    dest: "/home/{{ customize_user }}/.wallpaper.jpg" 
+    owner: "{{ customize_user }}" 
+    group: "{{ customize_user }}" 
+    mode: '777'
+  tags: [config]
+
+- name: Set desktop-background
+  dconf: 
+    key: "/org/mate/desktop/background/picture-filename" 
+    value: "'/home/{{ customize_user }}/.wallpaper.jpg'"
+  become_user: "{{ customize_user }}"
+  tags: [config]
+
