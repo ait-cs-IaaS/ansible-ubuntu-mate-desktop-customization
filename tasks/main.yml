@@ -1,7 +1,6 @@
 ---
 # tasks file for ubuntu-mate-desktop-customization
 
-
 - name: Updating apt-Cache
   apt:
     update_cache: yes
@@ -9,15 +8,49 @@
 
 - name: Install apt packages
   apt:
-    name: [python-psutil, dconf-editor, dbus, "{{ customize_theme_package }}"]
+    name: [python-psutil, dconf-editor, dbus]
+  become: yes
+  tags: [install, config]
+
+- name: Download GTK theme
+  apt:
+    name: "{{ customize_theme_package }}"
+  become: yes
+  when: customize_theme_package is defined
   tags: [install, config]
 
 - name: Set GTK theme
   dconf: 
     key: "/org/mate/desktop/interface/gtk-theme" 
-    value: "'{{ customize_theme_name }}'"
+    value: "'{{ customize_theme_name | default('Ambiant-MATE') }}'"
+  when: customize_theme_name is defined
   become_user: "{{ customize_user }}"
   tags: [config]
+
+- name: Copy panels config to host
+  template:
+    src: panels.j2
+    dest: "/home/{{ customize_user }}/panels" 
+  tags: [install]
+
+- name: Load panels config
+  shell: >
+    echo user-db:user > profile ; 
+    DCONF_PROFILE="$(pwd)/profile" 
+    dbus-launch 
+    dconf load /org/mate/panel/ < /home/{{ customize_user }}/panels
+  args:
+    chdir: "/home/{{ customize_user }}/" 
+  become: yes
+  become_user: "{{ customize_user }}"
+
+- name: Activate panels config
+  shell: dconf load /org/mate/panel/ < /home/{{ customize_user }}/panels
+  args:
+    chdir: "/home/{{ customize_user }}/" 
+  become: yes
+  become_user: "{{ customize_user }}"
+  failed_when: false
 
 - name: Copy desktop-background to host
   copy: 
@@ -34,4 +67,3 @@
     value: "'/home/{{ customize_user }}/.wallpaper.jpg'"
   become_user: "{{ customize_user }}"
   tags: [config]
-
