@@ -1,2 +1,21 @@
 ---
 # vars file for ubuntu-mate-desktop-customization
+
+customize_user: "rmach"
+# customize_theme_name: "Arc"
+# customize_theme_package: "arc-theme"
+
+laucher_objects:
+  htop: { position: 10 }
+  firefox: { position: 20}
+  thunderbird: { position: 10}
+  libreoffice-base: { position: 10}
+  libreoffice-calc: { position: 10}
+  libreoffice-draw: { position: 10}
+  libreoffice-writer: { position: 10}
+  
+# laucher_objects_list: "{{ laucher_objects | map(attribute='object_name') | list }}"
+laucher_objects_list: "{{ laucher_objects | list }}"
+default_object_list: ['briskmenu', 'notification-area', 'indicatorappletcomplete', 'clock', 'show-desktop', 'window-list', 'workspace-switcher', 'trashapplet']
+
+new_launcher_list: "{{ laucher_objects_list + default_object_list | list }}"
