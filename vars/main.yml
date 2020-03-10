@@ -5,17 +5,37 @@ customize_user: "rmach"
 # customize_theme_name: "Arc"
 # customize_theme_package: "arc-theme"
 
-laucher_objects:
-  htop: { position: 10 }
-  firefox: { position: 20}
-  thunderbird: { position: 10}
-  libreoffice-base: { position: 10}
-  libreoffice-calc: { position: 10}
-  libreoffice-draw: { position: 10}
-  libreoffice-writer: { position: 10}
-  
-# laucher_objects_list: "{{ laucher_objects | map(attribute='object_name') | list }}"
-laucher_objects_list: "{{ laucher_objects | list }}"
-default_object_list: ['briskmenu', 'notification-area', 'indicatorappletcomplete', 'clock', 'show-desktop', 'window-list', 'workspace-switcher', 'trashapplet']
+launcher_objects:
+  htop: 
+    object-type: 'launcher'
+    toplevel-id: 'top'
+    position: 30
+    launcher-location: '/usr/share/applications/htop.desktop'
+    menu-path: 'applications:/'
+  thunderbird: 
+    object-type: 'launcher'
+    toplevel-id: 'top'
+    position: 30
+    launcher-location: '/usr/share/applications/thunderbird.desktop'
+    menu-path: 'applications:/'
+  libreoffice-draw: 
+    object-type: 'launcher'
+    toplevel-id: 'top'
+    position: 30
+    launcher-location: '/usr/share/applications/libreoffice-draw.desktop'
+    menu-path: 'applications:/'
+  libreoffice-calc: 
+    object-type: 'launcher'
+    toplevel-id: 'top'
+    position: 30
+    launcher-location: '/usr/share/applications/libreoffice-calc.desktop'
+    menu-path: 'applications:/'
+  libreoffice-writer: 
+    object-type: 'launcher'
+    toplevel-id: 'top'
+    position: 30
+    launcher-location: '/usr/share/applications/libreoffice-writer.desktop'
+    menu-path: 'applications:/'
 
-new_launcher_list: "{{ laucher_objects_list + default_object_list | list }}"
+
+default_widgets_list: ['briskmenu', 'notification-area', 'indicatorappletcomplete', 'clock', 'show-desktop', 'window-list', 'workspace-switcher', 'trashapplet']
