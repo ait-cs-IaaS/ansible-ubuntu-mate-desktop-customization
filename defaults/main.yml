@@ -1,4 +1,4 @@
 ---
 # defaults file for ubuntu-mate-desktop-customization
 
-
+string_indicator: "\'"
