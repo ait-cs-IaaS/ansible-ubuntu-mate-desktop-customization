@@ -1,0 +1,20 @@
+
+# -------------------------------------------
+# *** Creating new object and setting properties ***
+# -------------------------------------------
+
+- name: "Set {{ object_name }} properties"
+  dconf: 
+    key: "/org/mate/panel/objects/{{ object_name }}/{{ property.key }}" 
+    value: "{{ property.value if (property.value | int) else (string_indicator + property.value + string_indicator) }}"
+  loop: "{{ object_properties | dict2items }}"
+  loop_control:
+   loop_var: property
+  become_user: "{{ customize_user }}"
+  tags: [config]
+
+
+- name: "Append {{ object_name }} to new panel list"
+  set_fact:
+    new_panel_list: "{{ new_panel_list + [object_name] }}"
+
