@@ -1,7 +1,6 @@
 ---
 # tasks file for ubuntu-mate-desktop-customization
 
-
 # -------------------------------------------
 # *** Prerequisites ***
 # -------------------------------------------
@@ -50,6 +49,7 @@
     state: read
   register: panel_list
   become_user: "{{ customize_user }}"
+  when: appendOnly
   tags: [config]
 
 - name: Create and define launcher objects
@@ -62,7 +62,7 @@
 - name: Set new panel list
   dconf: 
     key: "/org/mate/panel/general/object-id-list" 
-    value: "{{ new_panel_list }}"
+    value: "{{ new_panel_list if (appendOnly) else override_panel_list }}"
   become_user: "{{ customize_user }}"
   tags: [config]
 
