@@ -74,7 +74,7 @@
 
 - name: Copy desktop-background to host
   copy: 
-    src: files/wallpaper.jpg 
+    src: "{{ desktop_bg_src }}" 
     dest: "/home/{{ customize_user }}/.wallpaper.jpg" 
     owner: "{{ customize_user }}" 
     group: "{{ customize_user }}" 
