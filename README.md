@@ -1,38 +1,53 @@
 Role Name
 =========
 
-A brief description of the role goes here.
+This role allows for customization of a MATE surface.
 
-Requirements
-------------
-
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
 
-Dependencies
-------------
+| Variable name   | Type   | Default                    | Description                                              |
+|-----------------|--------|----------------------------|----------------------------------------------------------|
+| customize_user    | string | NA   | Username for whom to customize the desktop |
+| customize_theme_name* | string | NA | Themename |
+| customize_theme_package* | string | NA | Name of theme-package |
+| desktop_bg_src | string | files/wallpaper.jpg | Local image to be set as the backgroud image |
+| appendOnly | boolean | true | Wheiter or not the launcher objects should be appended or overwritten |
+| override_panel_list | string | [...] | If appendOnly is set to false, this list is used to define the launcher objects |
+| launcher_objects | dict | NA | Holds all launcher objects to be created and set |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ object-name | string | NA | Name of the launcher object |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;∟ launcher-location | string | (normally: /usr/share/applications/\<object-name\>.desktop) | Location of the respective .desktop file |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;∟ position* | string | NA | Nummeric indicator for ordering (ASC) |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;∟ object-type* | string | launcher | should remain unchanged |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;∟ toplevel-id* | string | top | 'top' or 'bottom' |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;∟ menu-path* | string | applications:/ | Menu path |
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+\* optional
+
+
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+```yml
+- hosts:
+    - <ip-address>
+  vars:
+    ansible_become: yes
+  roles:
+    - ubuntu-mate-desktop-customization
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+```
+
 
 License
 -------
 
-BSD
+MIT
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+This role was created in 2020 by Lenhard Reuter
