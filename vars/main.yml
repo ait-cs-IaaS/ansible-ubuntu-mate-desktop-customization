@@ -8,9 +8,9 @@ customize_user: "rmach"
 # customize_theme_name: "Arc"
 # customize_theme_package: "arc-theme"
 
-# Desktop background image
+# Desktop background image [default: "files/wallpaper.jpg"]
 # ---------------------------------------------------------------- 
-desktop_bg_src: "files/wallpaper.jpg"
+# desktop_bg_src: "files/wallpaper.jpg"
 
 # Set to false to override the list instead of appending
 # ----------------------------------------------------------------
