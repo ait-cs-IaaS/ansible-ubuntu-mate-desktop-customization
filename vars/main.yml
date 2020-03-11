@@ -2,40 +2,44 @@
 # vars file for ubuntu-mate-desktop-customization
 
 customize_user: "rmach"
+
+# Optionally installing and setting new theme
+# ---------------------------------------------------------------- 
 # customize_theme_name: "Arc"
 # customize_theme_package: "arc-theme"
 
+# Set to false to override the list instead of appending
+# ----------------------------------------------------------------
+appendOnly: true
+
+# List of launcher objects and widgets to be set when overriding  
+# ----------------------------------------------------------------
+override_panel_list: ['briskmenu', 'notification-area', 'indicatorappletcomplete', 'clock', 'show-desktop', 'window-list', 'workspace-switcher', 'trashapplet', 'firefox']
+
+# Launcher objects to be created
+# ----------------------------------------------------------------
 launcher_objects:
-  htop: 
-    object-type: 'launcher'
-    toplevel-id: 'top'
-    position: 30
+  # <object-name>
+  #   launcher-location: <location>
+  #   * optional other properties, defined in default_launcher_object
+  htop:
     launcher-location: '/usr/share/applications/htop.desktop'
-    menu-path: 'applications:/'
+    position: 30
   thunderbird: 
-    object-type: 'launcher'
-    toplevel-id: 'top'
-    position: 30
     launcher-location: '/usr/share/applications/thunderbird.desktop'
-    menu-path: 'applications:/'
+    position: 29
   libreoffice-draw: 
-    object-type: 'launcher'
-    toplevel-id: 'top'
-    position: 30
     launcher-location: '/usr/share/applications/libreoffice-draw.desktop'
-    menu-path: 'applications:/'
-  libreoffice-calc: 
-    object-type: 'launcher'
-    toplevel-id: 'top'
-    position: 30
-    launcher-location: '/usr/share/applications/libreoffice-calc.desktop'
-    menu-path: 'applications:/'
+    position: 28
+  libreoffice-calc:
+    launcher-location: '/usr/share/applications/libreoffice-calc.desktop' 
+    position: 27
   libreoffice-writer: 
-    object-type: 'launcher'
-    toplevel-id: 'top'
-    position: 30
     launcher-location: '/usr/share/applications/libreoffice-writer.desktop'
-    menu-path: 'applications:/'
+    position: 26
 
-
-default_widgets_list: ['briskmenu', 'notification-area', 'indicatorappletcomplete', 'clock', 'show-desktop', 'window-list', 'workspace-switcher', 'trashapplet']
+default_launcher_object:
+  object-type: 'launcher'
+  toplevel-id: 'top'
+  position: 20
+  menu-path: 'applications:/'
