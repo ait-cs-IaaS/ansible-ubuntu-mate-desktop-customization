@@ -3,3 +3,9 @@
 
 string_indicator: "\'"
 desktop_bg_src: "files/wallpaper.jpg"
+
+default_launcher_object:
+  object-type: 'launcher'
+  toplevel-id: 'top'
+  position: 20
+  menu-path: 'applications:/'
