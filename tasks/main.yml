@@ -1,20 +1,21 @@
 ---
 # tasks file for ubuntu-mate-desktop-customization
 
+
 # -------------------------------------------
 # *** Prerequisites ***
 # -------------------------------------------
 
-- name: Updating apt-Cache
-  apt:
-    update_cache: yes
-  tags: [install, config]
+# - name: Updating apt-Cache
+#   apt:
+#     update_cache: yes
+#   tags: [install, config]
 
-- name: Install apt packages
-  apt:
-    name: [python-psutil, dconf-editor, dbus]
-  become: yes
-  tags: [install, config]
+# - name: Install apt packages
+#   apt:
+#     name: [python-psutil, dconf-editor, dbus]
+#   become: yes
+#   tags: [install, config]
 
 
 # -------------------------------------------
@@ -42,6 +43,11 @@
 # *** Launcher ***
 # -------------------------------------------
 
+- name: Reset panel list
+  dconf:
+    key: "/org/mate/panel/general/object-id-list" 
+    state: present
+  become_user: "{{ customize_user }}"
 
 - name: Get current panel list
   dconf: 
@@ -52,17 +58,24 @@
   when: appendOnly
   tags: [config]
 
+# [BUG] Is empty if never connected before ...
+
 - name: Create and define launcher objects
   include:  create_new_panel_objects.yml 
-            object_name={{ item.key }} 
-            object_properties={{ item.value }}
+            object_name={{ new_items.key }} 
+            object_properties={{ new_items.value }}
             new_panel_list={{ panel_list.value }}
   loop: "{{ launcher_objects | dict2items }}"
+  loop_control:
+   loop_var: new_items
+
+# new_panel_list="{{ default_panel_list if (panel_list.value is none) else panel_list.value }}" # Fallback if panel_list is empty or never called
+
 
 - name: Set new panel list
   dconf: 
     key: "/org/mate/panel/general/object-id-list" 
-    value: "{{ new_panel_list if (appendOnly) else override_panel_list }}"
+    value: "{{ new_panel_list if (appendOnly and new_panel_list is defined) else override_panel_list }}"
   become_user: "{{ customize_user }}"
   tags: [config]
 
