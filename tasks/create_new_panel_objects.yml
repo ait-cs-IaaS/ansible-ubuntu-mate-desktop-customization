@@ -1,5 +1,21 @@
 
 # -------------------------------------------
+# *** Creating new desktop file ***
+# -------------------------------------------
+
+- name: Get desktop file discription
+  set_fact: 
+    content: "{{ desktop_files[item] | default(omit)}}"
+  with_items: "{{ object_name }}"
+
+- name: Create new desktop file
+  template:
+    src: desktop_entry.desktop.j2
+    dest: "/usr/share/applications/{{ object_name }}.desktop"
+  when: content is not none
+
+
+# -------------------------------------------
 # *** Creating new object and setting properties ***
 # -------------------------------------------
 
@@ -17,8 +33,8 @@
   become_user: "{{ customize_user }}"
   tags: [config]
 
+
 - name: "Append {{ object_name }} to new panel list"
   set_fact:
     new_panel_list: "{{ new_panel_list + [object_name] }}"
-  when: appendOnly
-
+  when: appendOnly and object_name not in new_panel_list
