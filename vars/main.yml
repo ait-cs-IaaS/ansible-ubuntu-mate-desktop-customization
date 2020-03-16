@@ -30,6 +30,17 @@ launcher_objects:
   firefox:
     launcher-location: '/usr/share/applications/firefox.desktop'
     position: 30
+  samplefile:
+    launcher-location: '/usr/share/applications/samplefile.desktop'
+    position: 30
 
-
-    
+desktop_files: 
+  samplefile: # file
+    Desktop Entry: # section
+      Type: Application
+      Encoding: UTF-8
+      Name: Sample Application Name
+      Comment: A sample application
+      Exec: firefox -new-window
+      Icon: firefox
+      Terminal: false
