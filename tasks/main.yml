@@ -6,16 +6,16 @@
 # *** Prerequisites ***
 # -------------------------------------------
 
-# - name: Updating apt-Cache
-#   apt:
-#     update_cache: yes
-#   tags: [install, config]
+- name: Updating apt-Cache
+  apt:
+    update_cache: yes
+  tags: [install, config]
 
-# - name: Install apt packages
-#   apt:
-#     name: [python-psutil, dconf-editor, dbus]
-#   become: yes
-#   tags: [install, config]
+- name: Install apt packages
+  apt:
+    name: [python-psutil, dconf-editor, dbus]
+  become: yes
+  tags: [install, config]
 
 
 # -------------------------------------------
@@ -43,12 +43,6 @@
 # *** Launcher ***
 # -------------------------------------------
 
-- name: Reset panel list
-  dconf:
-    key: "/org/mate/panel/general/object-id-list" 
-    state: present
-  become_user: "{{ customize_user }}"
-
 - name: Get current panel list
   dconf: 
     key: "/org/mate/panel/general/object-id-list" 
@@ -58,7 +52,50 @@
   when: appendOnly
   tags: [config]
 
+
 # [BUG] Is empty if never connected before ...
+
+- name: Copy and install default profile
+  block:
+    - name: Copy profile to host
+      copy:
+        src: default_profile 
+        dest: /tmp/default_profile
+    - name: Load panels config
+      shell: >
+        echo user-db:user > profile ; 
+        DCONF_PROFILE="$(pwd)/profile" 
+        dbus-launch 
+        dconf load / < /tmp/default_profile    
+      args:
+        chdir: "/home/{{ customize_user }}/" 
+      become: yes
+      become_user: "{{ customize_user }}"
+    - name: Activate panels config
+      shell: dconf load / < /tmp/default_profile  
+      args:
+        chdir: "/home/{{ customize_user }}/" 
+      failed_when: false
+      become: yes
+      become_user: "{{ customize_user }}"
+    - name: Remove tmp file
+      file: 
+        path: /tmp/default_profile
+        state: absent
+    - name: Get current panel list
+      dconf: 
+        key: "/org/mate/panel/general/object-id-list" 
+        state: read
+      register: panel_list_reset
+      when: appendOnly
+  when: panel_list.value is none
+  become: yes
+  become_user: "{{ customize_user }}"
+
+- name: Setting panel_list
+  set_fact: 
+    panel_list: "{{ panel_list_reset if (panel_list.value is none) else panel_list }}"
+
 
 - name: Create and define launcher objects
   include:  create_new_panel_objects.yml 
@@ -68,6 +105,7 @@
   loop: "{{ launcher_objects | dict2items }}"
   loop_control:
    loop_var: new_items
+
 
 # new_panel_list="{{ default_panel_list if (panel_list.value is none) else panel_list.value }}" # Fallback if panel_list is empty or never called
 
