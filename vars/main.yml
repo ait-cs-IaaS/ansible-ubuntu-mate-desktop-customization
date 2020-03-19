@@ -1,7 +1,8 @@
 ---
 # vars file for ubuntu-mate-desktop-customization
 
-customize_user: "rmach"
+# // EXAMPLE //
+# customize_user: "rmach"
 
 # Optionally installing and setting new theme
 # ---------------------------------------------------------------- 
@@ -14,11 +15,11 @@ customize_user: "rmach"
 
 # Set to false to override the list instead of appending
 # ----------------------------------------------------------------
-appendOnly: true
+# appendOnly: true
 
 # List of launcher objects and widgets to be set when overriding  
 # ----------------------------------------------------------------
-override_panel_list: ['briskmenu', 'notification-area', 'indicatorappletcomplete', 'clock', 'show-desktop', 'window-list', 'workspace-switcher', 'trashapplet']
+# override_panel_list: ['briskmenu', 'notification-area', 'indicatorappletcomplete', 'clock', 'show-desktop', 'window-list', 'workspace-switcher', 'trashapplet']
 
 # Launcher objects to be created
 # ----------------------------------------------------------------
@@ -26,21 +27,26 @@ override_panel_list: ['briskmenu', 'notification-area', 'indicatorappletcomplete
 # <object-name>
 #   launcher-location: <location>
 #   * optional other properties, defined in default_launcher_object
-launcher_objects:
-  firefox:
-    launcher-location: '/usr/share/applications/firefox.desktop'
-    position: 30
-  samplefile:
-    launcher-location: '/usr/share/applications/samplefile.desktop'
-    position: 30
 
-desktop_files: 
-  samplefile: # file
-    Desktop Entry: # section
-      Type: Application
-      Encoding: UTF-8
-      Name: Sample Application Name
-      Comment: A sample application
-      Exec: firefox -new-window
-      Icon: firefox
-      Terminal: false
+
+# // EXAMPLE //
+# launcher_objects:
+#   firefox:
+#     launcher-location: '/usr/share/applications/firefox.desktop'
+#     position: 30
+#   samplefile:
+#     launcher-location: '/usr/share/applications/samplefile.desktop'
+#     position: 30
+
+
+# // EXAMPLE //
+# desktop_files: 
+#   samplefile: # file
+#     Desktop Entry: # section
+#       Type: Application
+#       Encoding: UTF-8
+#       Name: Sample Application Name
+#       Comment: A sample application
+#       Exec: firefox -new-window
+#       Icon: firefox
+#       Terminal: false
