@@ -96,7 +96,6 @@
   set_fact: 
     panel_list: "{{ panel_list_reset if (panel_list.value is none) else panel_list }}"
 
-
 - name: Create and define launcher objects
   include:  create_new_panel_objects.yml 
             object_name={{ new_items.key }} 
@@ -105,10 +104,6 @@
   loop: "{{ launcher_objects | dict2items }}"
   loop_control:
    loop_var: new_items
-
-
-# new_panel_list="{{ default_panel_list if (panel_list.value is none) else panel_list.value }}" # Fallback if panel_list is empty or never called
-
 
 - name: Set new panel list
   dconf: 
