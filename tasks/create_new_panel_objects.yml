@@ -33,8 +33,7 @@
   become_user: "{{ customize_user }}"
   tags: [config]
 
-
 - name: "Append {{ object_name }} to new panel list"
   set_fact:
-    new_panel_list: "{{ new_panel_list + [object_name] }}"
-  when: appendOnly and object_name not in new_panel_list
+    new_panel_list: "{{ new_panel_list + [object_name] if (appendOnly and object_name not in new_panel_list) else new_panel_list }}"
+
