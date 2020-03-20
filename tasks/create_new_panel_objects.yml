@@ -5,14 +5,14 @@
 
 - name: Get desktop file discription
   set_fact: 
-    content: "{{ desktop_files[item] | default(omit)}}"
+    content: "{{ desktop_files[item] | default(None)}}"
   with_items: "{{ object_name }}"
 
 - name: Create new desktop file
   template:
     src: desktop_entry.desktop.j2
     dest: "/usr/share/applications/{{ object_name }}.desktop"
-  when: content is not none
+  when: content != ""
 
 
 # -------------------------------------------
