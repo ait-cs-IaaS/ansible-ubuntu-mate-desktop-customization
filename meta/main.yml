@@ -11,10 +11,11 @@ galaxy_info:
         - 18.04 LTS
 
   categories:
-    - wordpress
-    - website
-    - blog
-    - ubuntu
+    - ubuntu-mate
+    - desktop
+    - themes
+    - background
+    - panel
 
   galaxy_tags: []
 
