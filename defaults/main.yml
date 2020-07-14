@@ -1,7 +1,7 @@
 ---
 # defaults file for ubuntu-mate-desktop-customization
 
-string_indicator: "\'"
+string_indicator: "'"
 desktop_bg_src: "files/wallpaper.jpg"
 content: null
 
