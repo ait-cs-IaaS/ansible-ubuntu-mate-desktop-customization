@@ -121,15 +121,14 @@
 - name: Copy desktop-background to host
   copy: 
     src: "{{ desktop_bg_src }}" 
-    dest: "/home/{{ customize_user }}/.wallpaper.jpg" 
-    owner: "{{ customize_user }}" 
-    group: "{{ customize_user }}" 
-    mode: '777'
+    dest: "/usr/share/backgrounds/{{ desktop_bg_src | basename }}" 
+    mode: '0644'
+  become: yes
   tags: [config]
 
 - name: Set desktop-background
   dconf: 
     key: "/org/mate/desktop/background/picture-filename" 
-    value: "'/home/{{ customize_user }}/.wallpaper.jpg'"
+    value: "'/usr/share/backgrounds/{{ desktop_bg_src | basename }}'"
   become_user: "{{ customize_user }}"
   tags: [config]
