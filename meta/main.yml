@@ -1,14 +1,16 @@
 galaxy_info:
   author: Lenhard Reuter
+  role_name: ubuntu_mate_desktop_customization
   description: Customizing Ubuntu MATE desktop 
   company: Austrian Institute of Technology (AIT)
 
-  license: MIT
+  license: GPL-3.0
   min_ansible_version: 2.4
   platforms:
     - name: Ubuntu
       versions:
-        - 18.04 LTS
+        - "18.04"
+        - "20.04"
 
   categories:
     - ubuntu-mate
