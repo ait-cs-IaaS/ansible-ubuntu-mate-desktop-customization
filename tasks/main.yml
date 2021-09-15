@@ -146,3 +146,9 @@
     value: "true"
   become_user: "{{ customize_user }}"
   tags: [config]
+
+- name: Cleanup Mate autostart
+  file:
+    path: "/etc/xdg/autostart/{{ item }}"
+    state: absent
+  with_items: "{{ mate_autostart_absent_list }}"

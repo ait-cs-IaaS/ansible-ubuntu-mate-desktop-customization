@@ -1,12 +1,10 @@
-Role Name
+Ansible Role: ubuntu_mate_desktop_customization
 =========
 
 This role allows for customization of a MATE surface.
 
-
 Role Variables
 --------------
-
 
 | Variable name   | Type   | Default                    | Description                                              |
 |-----------------|--------|----------------------------|----------------------------------------------------------|
@@ -15,7 +13,7 @@ Role Variables
 | customize_theme_package* | string | NA | Name of theme-package |
 | desktop_bg_src | string | files/wallpaper.jpg | Local image to be set as the backgroud image |
 | appendOnly | boolean | true | Wheiter or not the launcher objects should be appended or overwritten |
-| override_panel_list | string | [...] | If appendOnly is set to false, this list is used to define the launcher objects |
+| override_panel_list | list | [...] | If appendOnly is set to false, this list is used to define the launcher objects |
 | launcher_objects | dict | NA | Holds all launcher objects to be created and set |
 | &nbsp;&nbsp;&nbsp;&nbsp;∟ object-name | string | NA | Name of the launcher object |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;∟ launcher-location | string | (normally: /usr/share/applications/\<object-name\>.desktop) | Location of the respective .desktop file |
@@ -23,9 +21,7 @@ Role Variables
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;∟ object-type* | string | launcher | should remain unchanged |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;∟ toplevel-id* | string | top | 'top' or 'bottom' |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;∟ menu-path* | string | applications:/ | Menu path |
-
-\* optional
-
+| mate_autostart_absent_list | list | [...] | List of files to remove from `/etc/xdg/autostart` mate autostart |
 
 
 Example Playbook
@@ -34,20 +30,17 @@ Example Playbook
 ```yml
 - hosts:
     - <ip-address>
-  vars:
-    ansible_become: yes
   roles:
-    - ubuntu-mate-desktop-customization
+    - ubuntu_mate_desktop_customization
 
 ```
-
 
 License
 -------
 
-MIT
+GPL-3.0
 
 Author Information
 ------------------
 
-This role was created in 2020 by Lenhard Reuter
+Lenhard Reuter
