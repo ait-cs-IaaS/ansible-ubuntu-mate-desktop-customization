@@ -132,3 +132,17 @@
     value: "'/usr/share/backgrounds/{{ desktop_bg_src | basename }}'"
   become_user: "{{ customize_user }}"
   tags: [config]
+
+- name: Disable Screensaver
+  dconf: 
+    key: "/org/mate/screensaver/idle-activation-enabled" 
+    value: "false"
+  become_user: "{{ customize_user }}"
+  tags: [config]
+
+- name: Set Seconds on Clock
+  dconf: 
+    key: "/org/mate/panel/objects/clock/prefs" 
+    value: "true"
+  become_user: "{{ customize_user }}"
+  tags: [config]
