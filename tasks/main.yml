@@ -133,6 +133,14 @@
   become_user: "{{ customize_user }}"
   tags: [config]
 
+- name: Disable Powermangager
+  dconf: 
+    key: "/org/mate/power-manager/{{ item }}" 
+    value: "0"
+  become_user: "{{ customize_user }}"
+  tags: [config]
+  with_items: ["sleep-computer-ac", "sleep-display-ac"]
+
 - name: Disable Screensaver
   dconf: 
     key: "/org/mate/screensaver/idle-activation-enabled" 
@@ -142,7 +150,7 @@
 
 - name: Set Seconds on Clock
   dconf: 
-    key: "/org/mate/panel/objects/clock/prefs" 
+    key: "/org/mate/panel/objects/clock/prefs/show-seconds"
     value: "true"
   become_user: "{{ customize_user }}"
   tags: [config]
@@ -152,3 +160,4 @@
     path: "/etc/xdg/autostart/{{ item }}"
     state: absent
   with_items: "{{ mate_autostart_absent_list }}"
+
