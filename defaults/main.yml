@@ -1,11 +1,18 @@
 ---
-# defaults file for ubuntu-mate-desktop-customization
-
 string_indicator: "'"
 desktop_bg_src: "files/wallpaper.jpg"
 content: null
 
-default_panel_list: ['briskmenu', 'notification-area', 'indicatorappletcomplete', 'clock', 'show-desktop', 'window-list', 'workspace-switcher', 'trashapplet', 'firefox']
+default_panel_list:
+  - 'briskmenu'
+  - 'notification-area'
+  - 'indicatorappletcomplete'
+  - 'clock'
+  - 'show-desktop'
+  - 'window-list'
+  - 'workspace-switcher'
+  - 'trashapplet'
+  - 'firefox'
 
 default_launcher_object:
   object-type: 'launcher'

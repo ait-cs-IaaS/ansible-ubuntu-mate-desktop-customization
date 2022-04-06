@@ -1,0 +1,43 @@
+---
+- name: Copy desktop-background to host
+  ansible.builtin.copy:
+    src: "{{ desktop_bg_src }}"
+    dest: "/usr/share/backgrounds/{{ desktop_bg_src | basename }}"
+    mode: '0644'
+  become: true
+  tags: [config]
+
+- name: Set desktop-background
+  community.general.dconf:
+    key: "/org/mate/desktop/background/picture-filename"
+    value: "'/usr/share/backgrounds/{{ desktop_bg_src | basename }}'"
+  become_user: "{{ customize_user }}"
+  tags: [config]
+
+- name: Disable Powermangager
+  community.general.dconf:
+    key: "/org/mate/power-manager/{{ item }}"
+    value: "0"
+  become_user: "{{ customize_user }}"
+  tags: [config]
+  with_items: ["sleep-computer-ac", "sleep-display-ac"]
+
+- name: Disable Screensaver
+  community.general.dconf:
+    key: "/org/mate/screensaver/idle-activation-enabled"
+    value: "false"
+  become_user: "{{ customize_user }}"
+  tags: [config]
+
+- name: Set Seconds on Clock
+  community.general.dconf:
+    key: "/org/mate/panel/objects/clock/prefs/show-seconds"
+    value: "true"
+  become_user: "{{ customize_user }}"
+  tags: [config]
+
+- name: Cleanup Mate autostart
+  ansible.builtin.file:
+    path: "/etc/xdg/autostart/{{ item }}"
+    state: absent
+  with_items: "{{ mate_autostart_absent_list }}"

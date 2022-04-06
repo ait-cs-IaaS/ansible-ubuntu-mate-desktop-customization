@@ -1,20 +1,13 @@
 ---
-# tasks file for ubuntu-mate-desktop-customization
-
-
-# -------------------------------------------
-# *** Prerequisites ***
-# -------------------------------------------
-
 - name: Updating apt-Cache
-  apt:
-    update_cache: yes
+  ansible.builtin.apt:
+    update_cache: true
   tags: [install, config]
 
 - name: Install apt packages
-  apt:
+  ansible.builtin.apt:
     name: [python-psutil, dconf-editor, dbus]
-  become: yes
+  become: true
   tags: [install, config]
 
 
@@ -24,15 +17,15 @@
 
 
 - name: Download GTK theme
-  apt:
+  ansible.builtin.apt:
     name: "{{ customize_theme_package }}"
-  become: yes
+  become: true
   when: customize_theme_package is defined
   tags: [install, config]
 
 - name: Set GTK theme
-  dconf: 
-    key: "/org/mate/desktop/interface/gtk-theme" 
+  community.general.dconf:
+    key: "/org/mate/desktop/interface/gtk-theme"
     value: "'{{ customize_theme_name | default('Ambiant-MATE') }}'"
   when: customize_theme_name is defined
   become_user: "{{ customize_user }}"
@@ -44,12 +37,12 @@
 # -------------------------------------------
 
 - name: Get current panel list
-  dconf: 
-    key: "/org/mate/panel/general/object-id-list" 
+  community.general.dconf:
+    key: "/org/mate/panel/general/object-id-list"
     state: read
   register: panel_list
   become_user: "{{ customize_user }}"
-  when: appendOnly
+  when: append_only
   tags: [config]
 
 
@@ -58,106 +51,63 @@
 - name: Copy and install default profile
   block:
     - name: Copy profile to host
-      copy:
-        src: default_profile 
+      ansible.builtin.copy:
+        src: default_profile
         dest: /tmp/default_profile
+        mode: preserve
     - name: Load panels config
-      shell: >
-        echo user-db:user > profile ; 
-        DCONF_PROFILE="$(pwd)/profile" 
-        dbus-launch 
-        dconf load / < /tmp/default_profile    
+      ansible.builtin.shell: >
+        echo user-db:user > profile ;
+        DCONF_PROFILE="$(pwd)/profile"
+        dbus-launch
+        dconf load / < /tmp/default_profile
       args:
-        chdir: "/home/{{ customize_user }}/" 
-      become: yes
+        chdir: "/home/{{ customize_user }}/"
+      become: true
       become_user: "{{ customize_user }}"
+      changed_when: true
     - name: Activate panels config
-      shell: dconf load / < /tmp/default_profile  
+      ansible.builtin.shell: dconf load / < /tmp/default_profile
       args:
-        chdir: "/home/{{ customize_user }}/" 
+        chdir: "/home/{{ customize_user }}/"
       failed_when: false
-      become: yes
+      become: true
       become_user: "{{ customize_user }}"
+      changed_when: true
     - name: Remove tmp file
-      file: 
+      ansible.builtin.file:
         path: /tmp/default_profile
         state: absent
     - name: Get current panel list
-      dconf: 
-        key: "/org/mate/panel/general/object-id-list" 
+      community.general.dconf:
+        key: "/org/mate/panel/general/object-id-list"
         state: read
       register: panel_list_reset
-      when: appendOnly
+      when: append_only
   when: panel_list.value is none
-  become: yes
+  become: true
   become_user: "{{ customize_user }}"
 
 - name: Setting panel_list
-  set_fact: 
+  ansible.builtin.set_fact:
     panel_list: "{{ panel_list_reset if (panel_list.value is none) else panel_list }}"
 
 - name: Create and define launcher objects
-  include:  create_new_panel_objects.yml 
-            object_name={{ new_items.key }} 
-            object_properties={{ new_items.value }}
-            new_panel_list={{ panel_list.value }}
+  ansible.builtin.include_tasks: create_new_panel_objects.yml
+  vars:
+    object_name: "{{ new_items.key }}"
+    object_properties: "{{ new_items.value }}"
+    new_panel_list: "{{ panel_list.value }}"
   loop: "{{ launcher_objects | dict2items }}"
   loop_control:
-   loop_var: new_items
+    loop_var: new_items
 
 - name: Set new panel list
-  dconf: 
-    key: "/org/mate/panel/general/object-id-list" 
-    value: "{{ new_panel_list if (appendOnly and new_panel_list is defined) else override_panel_list }}"
+  community.general.dconf:
+    key: "/org/mate/panel/general/object-id-list"
+    value: "{{ new_panel_list if (append_only and new_panel_list is defined) else override_panel_list }}"
   become_user: "{{ customize_user }}"
   tags: [config]
 
-
-# -------------------------------------------
-# *** Desktop Background ***
-# -------------------------------------------
-
-
-- name: Copy desktop-background to host
-  copy: 
-    src: "{{ desktop_bg_src }}" 
-    dest: "/usr/share/backgrounds/{{ desktop_bg_src | basename }}" 
-    mode: '0644'
-  become: yes
-  tags: [config]
-
-- name: Set desktop-background
-  dconf: 
-    key: "/org/mate/desktop/background/picture-filename" 
-    value: "'/usr/share/backgrounds/{{ desktop_bg_src | basename }}'"
-  become_user: "{{ customize_user }}"
-  tags: [config]
-
-- name: Disable Powermangager
-  dconf: 
-    key: "/org/mate/power-manager/{{ item }}" 
-    value: "0"
-  become_user: "{{ customize_user }}"
-  tags: [config]
-  with_items: ["sleep-computer-ac", "sleep-display-ac"]
-
-- name: Disable Screensaver
-  dconf: 
-    key: "/org/mate/screensaver/idle-activation-enabled" 
-    value: "false"
-  become_user: "{{ customize_user }}"
-  tags: [config]
-
-- name: Set Seconds on Clock
-  dconf: 
-    key: "/org/mate/panel/objects/clock/prefs/show-seconds"
-    value: "true"
-  become_user: "{{ customize_user }}"
-  tags: [config]
-
-- name: Cleanup Mate autostart
-  file:
-    path: "/etc/xdg/autostart/{{ item }}"
-    state: absent
-  with_items: "{{ mate_autostart_absent_list }}"
-
+- name: Set Desktop Background
+  ansible.builtin.include_tasks: background.yml
