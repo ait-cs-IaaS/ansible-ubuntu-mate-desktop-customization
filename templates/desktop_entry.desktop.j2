@@ -1,5 +1,5 @@
 {% if content is defined %}
-    {% for section, entries in content.items() %} 
+    {% for section, entries in content.items() %}
 [{{section}}]
             {% for key,value  in entries.items() %}
 {{key}}={{value}}
