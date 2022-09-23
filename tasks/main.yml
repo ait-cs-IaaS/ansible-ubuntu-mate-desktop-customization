@@ -1,12 +1,8 @@
 ---
-- name: Updating apt-Cache
-  ansible.builtin.apt:
-    update_cache: true
-  tags: [install, config]
-
 - name: Install apt packages
   ansible.builtin.apt:
-    name: [python-psutil, dconf-editor, dbus]
+    update_cache: true
+    name: [dconf-editor, dbus]
   become: true
   tags: [install, config]
 
@@ -42,7 +38,6 @@
     state: read
   register: panel_list
   become_user: "{{ customize_user }}"
-  when: append_only
   tags: [config]
 
 
@@ -83,7 +78,6 @@
         key: "/org/mate/panel/general/object-id-list"
         state: read
       register: panel_list_reset
-      when: append_only
   when: panel_list.value is none
   become: true
   become_user: "{{ customize_user }}"
@@ -105,7 +99,8 @@
 - name: Set new panel list
   community.general.dconf:
     key: "/org/mate/panel/general/object-id-list"
-    value: "{{ new_panel_list if (append_only and new_panel_list is defined) else override_panel_list }}"
+    value: "{{ override_panel_list }}"
+  when: override_panel_list is defined
   become_user: "{{ customize_user }}"
   tags: [config]
 

@@ -10,7 +10,6 @@ This role allows for customization of a MATE surface.
 | customize_theme_name* | string | NA | Themename |
 | customize_theme_package* | string | NA | Name of theme-package |
 | desktop_bg_src | string | files/wallpaper.jpg | Local image to be set as the backgroud image |
-| append_only | boolean | true | Wheiter or not the launcher objects should be appended or overwritten |
 | override_panel_list | list | [...] | If append_only is set to false, this list is used to define the launcher objects |
 | launcher_objects | dict | NA | Holds all launcher objects to be created and set |
 | &nbsp;&nbsp;&nbsp;&nbsp;∟ object-name | string | NA | Name of the launcher object |

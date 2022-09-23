@@ -32,3 +32,5 @@ mate_autostart_absent_list:
   - org.gnome.SettingsDaemon.Smartcard.desktop
   - print-applet.desktop
   - geoclue-demo-agent.desktop
+
+launcher_objects: {}
