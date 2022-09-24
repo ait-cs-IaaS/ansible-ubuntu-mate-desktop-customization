@@ -7,11 +7,6 @@
   tags: [install, config]
 
 
-# -------------------------------------------
-# *** Theme ***
-# -------------------------------------------
-
-
 - name: Download GTK theme
   ansible.builtin.apt:
     name: "{{ customize_theme_package }}"
@@ -26,11 +21,6 @@
   when: customize_theme_name is defined
   become_user: "{{ customize_user }}"
   tags: [config]
-
-
-# -------------------------------------------
-# *** Launcher ***
-# -------------------------------------------
 
 - name: Get current panel list
   community.general.dconf:

@@ -10,7 +10,6 @@ This role allows for customization of a MATE surface.
 | customize_theme_name* | string | NA | Themename |
 | customize_theme_package* | string | NA | Name of theme-package |
 | desktop_bg_src | string | files/wallpaper.jpg | Local image to be set as the backgroud image |
-| override_panel_list | list | [...] | If append_only is set to false, this list is used to define the launcher objects |
 | launcher_objects | dict | NA | Holds all launcher objects to be created and set |
 | &nbsp;&nbsp;&nbsp;&nbsp;∟ object-name | string | NA | Name of the launcher object |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;∟ launcher-location | string | (normally: /usr/share/applications/\<object-name\>.desktop) | Location of the respective .desktop file |
@@ -27,7 +26,6 @@ This role allows for customization of a MATE surface.
     - <ip-address>
   roles:
     - ubuntu_mate_desktop_customization
-
 ```
 
 ## License
