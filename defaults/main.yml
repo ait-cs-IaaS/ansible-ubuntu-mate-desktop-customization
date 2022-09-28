@@ -1,24 +1,28 @@
 ---
 string_indicator: "'"
-desktop_bg_src: "files/wallpaper.png"
-content: null
+desktop_bg_src: files/wallpaper.png
+content:
+
+customize_theme_name: "Yaru-Mate"
+customize_theme_package: "gtk-theme-yaru-mate"
+customize_theme_repo: "ppa:flexiondotorg/yaru-mate"
 
 default_panel_list:
-  - 'briskmenu'
-  - 'notification-area'
-  - 'indicatorappletcomplete'
-  - 'clock'
-  - 'show-desktop'
-  - 'window-list'
-  - 'workspace-switcher'
-  - 'trashapplet'
-  - 'firefox'
+  - briskmenu
+  - notification-area
+  - indicatorappletcomplete
+  - clock
+  - show-desktop
+  - window-list
+  - workspace-switcher
+  - trashapplet
+  - firefox
 
 default_launcher_object:
-  object-type: 'launcher'
-  toplevel-id: 'top'
+  object-type: launcher
+  toplevel-id: top
   position: 20
-  menu-path: 'applications:/'
+  menu-path: applications:/
 
 mate_autostart_absent_list:
   - snap-userd-autostart.desktop
