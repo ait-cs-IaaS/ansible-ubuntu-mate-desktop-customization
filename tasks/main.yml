@@ -6,21 +6,18 @@
     state: present
   when: customize_theme_repo is defined
   tags: [install, config]
-
 - name: Install apt packages
   become: true
   ansible.builtin.apt:
     update_cache: true
     name: [dconf-editor, dbus]
   tags: [install, config]
-
 - name: Download GTK theme
   become: true
   community.general.snap:
     name: "{{ customize_theme_package }}"
   when: customize_theme_package is defined
   tags: [install, config]
-
 - name: Set GTK theme
   become_user: "{{ customize_user }}"
   become: true
@@ -29,7 +26,6 @@
     value: "'{{ customize_theme_name | default('Ambiant-MATE') }}'"
   when: customize_theme_name is defined
   tags: [config]
-  
 - name: Set Desktop Background
   ansible.builtin.include_tasks:
     file: background.yml
@@ -106,7 +102,7 @@
   become_user: "{{ customize_user }}"
   become: true
   community.general.dconf:
-    key: "/org/mate/panel/general/object-id-list" 
+    key: /org/mate/panel/general/object-id-list
     value: "{{ new_panel_list }}"
   when: new_panel_list is defined
   tags: [config]

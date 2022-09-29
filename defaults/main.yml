@@ -1,11 +1,9 @@
 ---
 string_indicator: "'"
 desktop_bg_src: files/wallpaper.png
-content:
-
-customize_theme_name: "Yaru-Mate"
-customize_theme_package: "gtk-theme-yaru-mate"
-customize_theme_repo: "ppa:flexiondotorg/yaru-mate"
+customize_theme_name: Yaru-Mate
+customize_theme_package: gtk-theme-yaru-mate
+customize_theme_repo: ppa:flexiondotorg/yaru-mate
 
 default_panel_list:
   - briskmenu
@@ -38,3 +36,4 @@ mate_autostart_absent_list:
   - geoclue-demo-agent.desktop
 
 launcher_objects: {}
+content:
